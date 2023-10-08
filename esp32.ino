@@ -1,12 +1,11 @@
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
-#include <WiFiManager.h>
 #include <WiFi.h>
 
 const char* url = "https://bokee.vercel.app/mqtt";  // URL ของ API
 
-const char* ssid = "ใส่ชื่อไวไฟ";
-const char* password = "ใส่รหัสไวไฟ";
+const char* ssid     = "Taelsiri_iot";
+const char* password = "iot_2565";
 
 void setup() {
   pinMode(13, OUTPUT);
@@ -21,20 +20,19 @@ void setup() {
   digitalWrite(2, 0);
   Serial.begin(115200);
   while (!Serial) { delay(100); }
-  WiFiManager wm;
+
   Serial.println();
-  Serial.println("******************************************************");
+  Serial.println("****************************************************");
   Serial.print("Connecting to ");
   Serial.println(ssid);
 
-  bool res;
-  res = wm.autoConnect(ssid, "password");
+  WiFi.begin(ssid, password);
 
-  if (!res) {
-    Serial.println("Failed to connect");
-    // ESP.restart();
-  } else {
+  while (WiFi.status() != WL_CONNECTED) {
     digitalWrite(2, 1);
+    delay(500);
+    digitalWrite(2, 0);
+    Serial.print(".");
   }
 
   Serial.println("");
